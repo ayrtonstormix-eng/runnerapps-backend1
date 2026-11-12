@@ -3,193 +3,523 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Runnerapps — Studio IA, Connecteurs & Paiements USD</title>
-<script src="https://cloudflare.com"></script>
-<script src="https://cloudflare.com"></script>
+<title>Truapps - Studio Créatif Local</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root {
---bg-deep: #040711;
---bg-panel: #0a1024;
---bg-card: #0f172a;
---border-neon: rgba(0, 140, 255, 0.35);
---blue-electric: #0077ff;
---cyan-glow: #00e5ff;
---text-main: #f1f5f9;
---text-muted: #94a3b8;
---success: #10b981;
---warning: #f59e0b;
---danger: #ef4444;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-body { background: var(--bg-deep); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
-
-.mobile-header {
-display: none; position: fixed; top: 0; left: 0; right: 0; height: 62px;
-background: rgba(4, 7, 17, 0.95); backdrop-filter: blur(10px);
-border-bottom: 1px solid var(--border-neon); z-index: 900;
-align-items: center; justify-content: space-between; padding: 0 16px;
-}
-.brand-mini { display: flex; align-items: center; gap: 10px; }
-.brand-mini span {
-font-weight: 800; font-size: 18px; letter-spacing: 1px;
-background: linear-gradient(90deg, #ffffff, #38bdf8);
--webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.burger-btn {
-background: #0f172a; border: 1px solid var(--border-neon); color: var(--cyan-glow);
-padding: 7px 13px; border-radius: 8px; font-size: 18px; cursor: pointer;
-}
-
-.sidebar {
-width: 275px; background: linear-gradient(180deg, #060b19 0%, #03050c 100%);
-border-right: 1px solid var(--border-neon);
-display: flex; flex-direction: column; padding: 18px 0;
-position: fixed; top: 0; bottom: 0; left: 0; overflow-y: auto; z-index: 950;
-transition: transform 0.25s ease;
-}
-.logo-wrapper { text-align: center; padding: 4px 16px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.logo-title {
-margin-top: 8px; font-size: 20px; font-weight: 900; letter-spacing: 1.5px; font-style: italic;
-background: linear-gradient(180deg, #ffffff 30%, #94a3b8 65%, #38bdf8 100%);
--webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.logo-sub { font-size: 11px; color: var(--cyan-glow); letter-spacing: 0.5px; margin-top: 2px; }
-
-.nav-section { font-size: 10px; text-transform: uppercase; color: #64748b; padding: 14px 20px 5px; letter-spacing: 1px; font-weight: 700; }
-.nav-btn {
-padding: 11px 20px; background: none; border: none; color: #cbd5e1;
-text-align: left; cursor: pointer; font-size: 13.5px; border-left: 3px solid transparent;
-transition: 0.2s; display: flex; align-items: center; gap: 10px; width: 100%;
-}
-.nav-btn:hover, .nav-btn.active {
-background: linear-gradient(90deg, rgba(0, 119, 255, 0.18), transparent);
-border-left-color: var(--cyan-glow); color: #ffffff; font-weight: 600;
-}
-
-.main-content { flex: 1; margin-left: 275px; padding: 26px; width: calc(100% - 275px); }
-
-.admin-topbar {
-background: linear-gradient(90deg, #1e1b4b, #31102f);
-border: 1px solid #f43f5e; border-radius: 12px; padding: 12px 18px;
-margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
-}
-.bell-badge {
-background: #ef4444; color: white; font-weight: 800; padding: 3px 10px;
-border-radius: 20px; font-size: 12px; margin-left: 6px;
-}
-
-.ad-banner {
-background: linear-gradient(135deg, #091534 0%, #0f295c 100%);
-border: 1px solid var(--border-neon);
-padding: 14px 18px; border-radius: 12px; margin-bottom: 22px;
-display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-box-shadow: 0 4px 20px rgba(0, 119, 255, 0.12);
-}
-.ad-badge { background: var(--cyan-glow); color: #040711; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 4px; }
-
-.module {
-display: none; background: var(--bg-panel); border: 1px solid var(--border-neon);
-padding: 26px; border-radius: 14px; max-width: 960px; margin: 0 auto;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-}
+:root { --primary: #0070ba; --bg: #f4f7f6; --text: #333; --dark: #1a1a1a; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+.sidebar { width: 250px; background: var(--dark); color: white; display: flex; flex-direction: column; padding: 20px 0; overflow-y: auto; }
+.sidebar h2 { text-align: center; margin-bottom: 30px; color: #0ff; }
+.nav-btn { padding: 15px 20px; background: none; border: none; color: white; text-align: left; cursor: pointer; font-size: 15px; border-left: 4px solid transparent; }
+.nav-btn:hover, .nav-btn.active { background: #333; border-left: 4px solid #0ff; }
+.main-content { flex: 1; padding: 30px; overflow-y: auto; }
+.module { display: none; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; }
 .module.active { display: block; }
-h1 {
-font-size: 22px; color: #ffffff; margin-bottom: 8px;
-border-bottom: 1px solid rgba(0, 229, 255, 0.2); padding-bottom: 12px;
-}
-.desc { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.55; }
-
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+h1 { margin-bottom: 20px; color: var(--dark); font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 .input-group { margin-bottom: 15px; }
-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
-input, select, textarea {
-width: 100%; padding: 11px 13px; border: 1px solid #1e293b; border-radius: 9px;
-font-size: 14px; background: #060b19; color: #ffffff; transition: 0.2s;
-}
-input:focus, select:focus, textarea:focus {
-outline: none; border-color: var(--cyan-glow); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-}
-
-.btn {
-background: linear-gradient(135deg, #0066ff 0%, #00aaff 100%);
-color: white; border: none; padding: 12px 18px;
-border-radius: 9px; cursor: pointer; font-weight: 700; font-size: 14px;
-width: 100%; transition: 0.2s; margin-top: 8px;
-box-shadow: 0 4px 14px rgba(0, 119, 255, 0.35);
-}
-.btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
-.btn-secondary { background: #1e293b; box-shadow: none; border: 1px solid #334155; }
-.btn-success { background: linear-gradient(135deg, #059669, #10b981); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3); }
-.btn-warning { background: linear-gradient(135deg, #d97706, #f59e0b); box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3); }
-.btn-danger { background: linear-gradient(135deg, #dc2626, #ef4444); box-shadow: none; }
-
-.card-box {
-border: 1px solid rgba(56, 189, 248, 0.22); border-radius: 11px; padding: 18px;
-background: linear-gradient(180deg, #0f172a 0%, #090e1d 100%);
-}
-.result-box {
-margin-top: 18px; padding: 16px; background: #060b19; border-left: 4px solid var(--cyan-glow);
-border-radius: 8px; display: none; font-size: 14px; line-height: 1.6; color: #e2e8f0;
-}
-.status-pill {
-display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700;
-background: rgba(0, 229, 255, 0.14); color: var(--cyan-glow); border: 1px solid rgba(0, 229, 255, 0.35);
-margin-bottom: 12px;
-}
-
-.gate {
-position: fixed; inset: 0; background: rgba(2, 4, 10, 0.88); backdrop-filter: blur(8px);
-display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 16px;
-}
+input[type="text"], input[type="email"], input[type="password"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; margin-top: 5px; }
+button.action-btn { background: var(--primary); color: white; border: none; padding: 14px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; font-size: 16px; }
+button.action-btn:hover { background: #005c99; }
+button.action-btn:disabled { opacity: .5; }
+button.secondary-btn { background: #666; }
+button.secondary-btn:hover { background: #444; }
+.result-box { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 5px; word-break: break-all; display: none; }
+.statut { padding: 15px; border-radius: 5px; background: #ffeeba; color: #856404; }
+.gate { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; z-index: 1000; }
 .gate.hidden { display: none; }
-.gate-box {
-background: var(--bg-panel); border: 1px solid var(--border-neon); padding: 28px;
-border-radius: 16px; width: min(460px, 100%); max-height: 92vh; overflow-y: auto;
-box-shadow: 0 0 40px rgba(0, 119, 255, 0.25);
-}
-.msg { margin-top: 10px; font-size: 13px; font-weight: 600; min-height: 18px; }
-
-.conn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px; }
-.conn-chip {
-background: #060b19; border: 1px solid #1e293b; border-radius: 8px; padding: 10px;
-cursor: pointer; transition: 0.2s; text-align: left; color: #e2e8f0;
-}
-.conn-chip:hover, .conn-chip.selected { border-color: var(--cyan-glow); background: rgba(0, 229, 255, 0.08); }
-.conn-chip small { display: block; color: var(--cyan-glow); font-size: 10px; margin-top: 2px; }
-
-@media (max-width: 840px) {
-.mobile-header { display: flex; }
-.sidebar { transform: translateX(-100%); top: 62px; width: 260px; }
-.sidebar.open { transform: translateX(0); }
-.main-content { margin-left: 0; width: 100%; padding: 80px 14px 28px; }
-.module { padding: 18px; }
+.gate-box { background: white; padding: 30px; border-radius: 10px; width: min(440px, 92vw); max-height: 92vh; overflow-y: auto; }
+.gate-box h2 { color: var(--dark); margin-bottom: 10px; }
+.gate-box p { margin-bottom: 12px; line-height: 1.5; }
+.gate-panel { display: none; }
+.gate-panel.active { display: block; }
+.msg { margin-top: 10px; font-weight: bold; min-height: 20px; }
+.separateur { border: 0; border-top: 1px dashed #ccc; margin: 25px 0; }
+.btn-paiement { display: block; text-align: center; background: #635bff; color: #fff; padding: 14px 20px; border-radius: 5px; font-weight: bold; text-decoration: none; border: none; width: 100%; cursor: pointer; font-size: 16px; }
+.btn-paiement:hover { background: #4b44d6; }
+@media (max-width: 700px) {
+  body { flex-direction: column; height: auto; overflow: auto; }
+  .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 10px; }
+  .sidebar h2 { width: 100%; margin-bottom: 10px; }
+  .nav-btn { padding: 10px; font-size: 14px; border-left: none; border-bottom: 3px solid transparent; }
+  .nav-btn:hover, .nav-btn.active { border-left: none; border-bottom: 3px solid #0ff; }
+  .main-content { padding: 15px; overflow: visible; }
+  .module { padding: 18px; }
 }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute;">
-<defs>
-<linearGradient id="neonBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-<stop offset="0%" stop-color="#00e5ff"/>
-<stop offset="50%" stop-color="#0077ff"/>
-<stop offset="100%" stop-color="#0033cc"/>
-</linearGradient>
-<linearGradient id="chromeMetal" x1="0%" y1="0%" x2="100%" y2="100%">
-<stop offset="0%" stop-color="#ffffff"/>
-<stop offset="45%" stop-color="#cbd5e1"/>
-<stop offset="55%" stop-color="#475569"/>
-<stop offset="100%" stop-color="#f8fafc"/>
-</linearGradient>
-<symbol id="runnerapps-logo" viewBox="0 0 200 200">
-<rect x="10" y="10" width="180" height="180" rx="42" fill="#030712" stroke="url(#neonBlue)" stroke-width="5"/>
-<ellipse cx="102" cy="100" rx="74" ry="44" transform="rotate(-24 102 100)" fill="none" stroke="url(#neonBlue)" stroke-width="4" opacity="0.85"/>
-<path d="M58 46 H126 C146 46 156 58 152 76 C149 91 137 100 121 103 L144 140 H116 L96 105 H79 L72 140 H48 L64 62 H50 Z M85 65 L80 87 H115 C124 87 129 82 130 75 C131 68 126 65 117 65 Z" fill="url(#chromeMetal)" stroke="#00e5ff" stroke-width="1.5"/>
-<line x1="42" y1="165" x2="86" y2="165" stroke="#00e5ff" stroke-width="2.5"/>
-<line x1="114" y1="165" x2="158" y2="165" stroke="#00e5ff" stroke-width="2.5"/>
-<polygon points="100,155 104,162 111,165 104,168 100,175 96,168 89,165 96,162" fill="#ffffff" stroke="#00e5ff" stroke-width="1"/>
-</symbol>
-</defs>
-</svg>
+<div id="gate" class="gate hidden">
+<div class="gate-box">
+
+<div id="panel-auth" class="gate-panel">
+<h2>Bienvenue sur Truapps 🚀</h2>
+<p>Créez votre compte pour bénéficier de <strong>7 jours d'essai gratuit</strong>. L'essai commence dès votre inscription.</p>
+<div class="input-group">
+<label>Adresse e-mail :</label>
+<input type="email" id="auth-email" placeholder="vous@exemple.com" autocomplete="email">
+</div>
+<div class="input-group">
+<label>Mot de passe (6 caractères minimum) :</label>
+<input type="password" id="auth-password" placeholder="••••••••" autocomplete="new-password">
+</div>
+<button class="action-btn" onclick="inscrire()">Créer mon compte (7 jours gratuits)</button>
+<button class="action-btn secondary-btn" onclick="seConnecter()">J'ai déjà un compte</button>
+<p id="auth-msg" class="msg"></p>
+</div>
+
+<div id="panel-paywall" class="gate-panel">
+<h2>Votre accès Premium est terminé</h2>
+<p>Pour continuer à utiliser Truapps, choisissez une option :</p>
+<button class="btn-paiement" onclick="payer('gate-msg')">S'abonner : 10 $ par mois</button>
+<p id="gate-msg" class="msg"></p>
+
+<hr class="separateur">
+
+<p>Vous avez déjà un code d'achat ?</p>
+<div class="input-group">
+<input type="text" id="gate-code" placeholder="VIP-XXXX-XXXX-XXXX" style="text-transform: uppercase;">
+</div>
+<button class="action-btn" onclick="utiliserCode('gate-code', 'gate-msg')">Activer mon code (30 jours)</button>
+
+<button class="action-btn secondary-btn" onclick="deconnexion()">Se déconnecter</button>
+</div>
+
+</div>
+</div>
+
+<div class="sidebar">
+<h2>Truapps 🚀</h2>
+<button class="nav-btn active" onclick="showModule('dash', this)">🏠 Tableau de bord</button>
+<button class="nav-btn" onclick="showModule('pdf', this)">📄 Générateur PDF</button>
+<button class="nav-btn" onclick="showModule('image', this)">🖼️ Outils Image</button>
+<button class="nav-btn" onclick="showModule('seo', this)">📢 Texte SEO</button>
+<button class="nav-btn" onclick="showModule('qr', this)">📱 Générateur QR</button>
+<button class="nav-btn" onclick="showModule('premium', this)" style="color: #ffd700;">👑 Truapps Premium</button>
+</div>
+
+<div class="main-content">
+
+<div id="dash" class="module active">
+<h1>Bienvenue sur Truapps</h1>
+<p>Votre studio de création autonome, ultra-rapide et 100% respectueux de votre vie privée.</p>
+<br>
+<div id="status-premium" class="statut">Chargement de votre accès...</div>
+<button class="action-btn secondary-btn" onclick="deconnexion()" style="margin-top: 20px;">Se déconnecter</button>
+</div>
+
+<div id="pdf" class="module">
+<h1>Générateur de PDF</h1>
+<div class="input-group">
+<label>Titre du document :</label>
+<input type="text" id="pdf-title" placeholder="Ex: Mon Certificat">
+</div>
+<div class="input-group">
+<label>Contenu :</label>
+<textarea id="pdf-content" rows="5" placeholder="Écrivez votre texte ici..."></textarea>
+</div>
+<button class="action-btn" onclick="genererPDF()">Télécharger le PDF</button>
+</div>
+
+<div id="image" class="module">
+<h1>Compresseur d'Image</h1>
+<p>Réduisez le poids de vos images sans les envoyer sur un serveur.</p>
+<div class="input-group">
+<input type="file" id="img-input" accept="image/*" onchange="previewImage(event)">
+</div>
+<div class="input-group">
+<label>Qualité (0.1 = très compressé, 1.0 = original) :</label>
+<input type="range" id="img-quality" min="0.1" max="1.0" step="0.1" value="0.7">
+</div>
+<button class="action-btn" onclick="compresserImage()">Compresser et Télécharger</button>
+</div>
+
+<div id="seo" class="module">
+<h1>Générateur de Texte SEO</h1>
+<div class="input-group">
+<label>Sujet de votre vidéo / image :</label>
+<input type="text" id="seo-topic" placeholder="Ex: Tutoriel de cuisine">
+</div>
+<button class="action-btn" onclick="genererSEO()">Générer Description & Hashtags</button>
+<div id="seo-result" class="result-box"></div>
+</div>
+
+<div id="qr" class="module">
+<h1>Générateur de QR Code</h1>
+<div class="input-group">
+<input type="text" id="qr-text" placeholder="Lien ou texte à encoder">
+</div>
+<button class="action-btn" onclick="genererQR()">Générer le QR Code</button>
+<div id="qr-result" style="margin-top: 20px; text-align: center;"></div>
+</div>
+
+<div id="premium" class="module">
+<h1 style="color: #d4af37;">Truapps Premium 👑</h1>
+<p>Votre essai gratuit de 7 jours démarre à votre inscription. L'abonnement mensuel se renouvelle automatiquement, et un code d'achat ajoute 30 jours d'accès.</p>
+<button class="btn-paiement" style="margin-top: 20px;" onclick="payer('premium-msg')">S'abonner : 10 $ par mois</button>
+<p id="premium-msg" class="msg"></p>
+
+<hr class="separateur">
+
+<h3>Vous avez un code d'achat ? Entrez-le ici :</h3>
+<div class="input-group">
+<input type="text" id="promo-input" placeholder="VIP-XXXX-XXXX-XXXX" style="text-transform: uppercase;">
+</div>
+<button class="action-btn" onclick="utiliserCode('promo-input', 'promo-msg')">Activer mon accès 30 jours</button>
+<p id="promo-msg" class="msg"></p>
+</div>
+
+</div>
+
+<script>
+// ==========================================
+// 1. NAVIGATION
+// ==========================================
+function showModule(id, btn) {
+  document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ==========================================
+// 2. COMPTE, ESSAI, ABONNEMENT
+// ==========================================
+const SUPABASE_URL = "https://jkppntxprnaiobdwvtin.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Aj7GoAZgUAhXKc-_G2zz3g_tjMMO9-T";
+const VERIFY_URL = SUPABASE_URL + "/functions/v1/verify-vip";
+const RENDER_API = "https://truapps.onrender.com";
+const SESSION_KEY = "truapps_session";
+
+function lireSession() {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); } catch (e) { return null; }
+}
+function sauverSession(s) {
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
+}
+function effacerSession() {
+  try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+}
+
+function formaterDate(iso) {
+  return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+async function authRequest(chemin, corps) {
+  const r = await fetch(SUPABASE_URL + "/auth/v1/" + chemin, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY },
+    body: JSON.stringify(corps)
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.msg || data.error_description || data.message || "Erreur d'authentification");
+  return data;
+}
+
+function sessionDepuisReponse(d) {
+  return { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: Date.now() + d.expires_in * 1000 };
+}
+
+async function sessionValide() {
+  const s = lireSession();
+  if (!s || !s.refresh_token) return null;
+  if (s.expires_at - Date.now() > 60000) return s;
+  try {
+    const d = await authRequest("token?grant_type=refresh_token", { refresh_token: s.refresh_token });
+    const ns = sessionDepuisReponse(d);
+    sauverSession(ns);
+    return ns;
+  } catch (e) {
+    effacerSession();
+    return null;
+  }
+}
+
+async function appelerServeur(corps) {
+  const s = await sessionValide();
+  if (!s) throw new Error("NON_CONNECTE");
+  const r = await fetch(VERIFY_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + s.access_token },
+    body: JSON.stringify(corps)
+  });
+  if (r.status === 401) throw new Error("NON_CONNECTE");
+  return r.json();
+}
+
+function afficherGate(panneau) {
+  document.getElementById("gate").classList.remove("hidden");
+  document.querySelectorAll(".gate-panel").forEach(p => p.classList.remove("active"));
+  document.getElementById("panel-" + panneau).classList.add("active");
+}
+function masquerGate() {
+  document.getElementById("gate").classList.add("hidden");
+}
+function setMsg(id, texte, couleur) {
+  const el = document.getElementById(id);
+  el.style.color = couleur;
+  el.textContent = texte;
+}
+
+function afficherStatut(d) {
+  const status = document.getElementById("status-premium");
+  if (d.access_expires_at) {
+    status.innerHTML = `Statut : <strong>👑 Premium jusqu'au ${formaterDate(d.access_expires_at)}</strong>`;
+    status.style.background = "#d4edda";
+    status.style.color = "#155724";
+  } else {
+    status.innerHTML = `Statut : <strong>🎁 Essai gratuit jusqu'au ${formaterDate(d.trial_ends_at)}</strong>`;
+    status.style.background = "#e8f4fd";
+    status.style.color = "#0c4a6e";
+  }
+}
+
+async function verifierAcces() {
+  if (!(await sessionValide())) return afficherGate("auth");
+  try {
+    const d = await appelerServeur({ action: "status" });
+    if (d.active) {
+      masquerGate();
+      afficherStatut(d);
+    } else {
+      afficherGate("paywall");
+    }
+  } catch (e) {
+    if (e.message === "NON_CONNECTE") {
+      effacerSession();
+      afficherGate("auth");
+    } else {
+      afficherGate("paywall");
+      setMsg("gate-msg", "❌ Connexion au serveur impossible. Réessayez plus tard.", "red");
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  if (params.get("paiement")) {
+    history.replaceState(null, "", location.pathname);
+    if (params.get("paiement") === "ok") {
+      // Le webhook Stripe peut prendre quelques secondes
+      setTimeout(verifierAcces, 4000);
+      setTimeout(verifierAcces, 10000);
+      return;
+    }
+  }
+  verifierAcces();
+});
+
+async function inscrire() {
+  const email = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+  if (!email || password.length < 6) return setMsg("auth-msg", "❌ E-mail requis et mot de passe d'au moins 6 caractères.", "red");
+
+  setMsg("auth-msg", "Création du compte...", "#555");
+  try {
+    const d = await authRequest("signup", { email, password });
+    if (d.access_token) {
+      sauverSession(sessionDepuisReponse(d));
+      setMsg("auth-msg", "✅ Compte créé ! Votre essai de 7 jours a commencé.", "green");
+      verifierAcces();
+    } else {
+      setMsg("auth-msg", "✅ Compte créé ! Confirmez votre adresse e-mail, puis connectez-vous.", "green");
+    }
+  } catch (e) {
+    setMsg("auth-msg", "❌ " + traduireErreur(e.message), "red");
+  }
+}
+
+async function seConnecter() {
+  const email = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+  if (!email || !password) return setMsg("auth-msg", "❌ Entrez votre e-mail et votre mot de passe.", "red");
+
+  setMsg("auth-msg", "Connexion...", "#555");
+  try {
+    const d = await authRequest("token?grant_type=password", { email, password });
+    sauverSession(sessionDepuisReponse(d));
+    setMsg("auth-msg", "", "green");
+    verifierAcces();
+  } catch (e) {
+    setMsg("auth-msg", "❌ " + traduireErreur(e.message), "red");
+  }
+}
+
+function traduireErreur(msg) {
+  const m = (msg || "").toLowerCase();
+  if (m.includes("invalid login")) return "E-mail ou mot de passe incorrect.";
+  if (m.includes("already registered") || m.includes("already been registered")) return "Un compte existe déjà avec cet e-mail.";
+  if (m.includes("email not confirmed")) return "Confirmez d'abord votre adresse e-mail.";
+  if (m.includes("password")) return "Mot de passe trop court (6 caractères minimum).";
+  return msg || "Une erreur est survenue.";
+}
+
+function deconnexion() {
+  effacerSession();
+  location.reload();
+}
+
+// Paiement Stripe : le serveur crée la session et renvoie l'adresse de paiement
+async function payer(msgId) {
+  const s = await sessionValide();
+  if (!s) return afficherGate("auth");
+
+  setMsg(msgId, "Connexion au paiement (peut prendre une minute)...", "#555");
+  try {
+    const r = await fetch(RENDER_API + "/api/checkout", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + s.access_token }
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.url) throw new Error(d.detail || "erreur " + r.status);
+    location.href = d.url;
+  } catch (e) {
+    setMsg(msgId, "❌ Paiement impossible : " + e.message, "red");
+  }
+}
+
+async function utiliserCode(inputId, msgId) {
+  const input = document.getElementById(inputId);
+  const code = input.value.trim().toUpperCase();
+  if (!code) return;
+
+  setMsg(msgId, "Vérification en cours...", "#555");
+  try {
+    const d = await appelerServeur({ action: "redeem", code });
+    if (d.valid === true) {
+      input.value = "";
+      setMsg(msgId, `✅ Accès activé jusqu'au ${formaterDate(d.access_expires_at)}.`, "green");
+      setTimeout(verifierAcces, 1500);
+    } else {
+      setMsg(msgId, "❌ Code invalide, déjà utilisé ou expiré.", "red");
+    }
+  } catch (e) {
+    if (e.message === "NON_CONNECTE") {
+      setMsg(msgId, "❌ Connectez-vous d'abord.", "red");
+      afficherGate("auth");
+    } else {
+      setMsg(msgId, "❌ Vérification impossible. Vérifiez votre connexion.", "red");
+    }
+  }
+}
+
+// ==========================================
+// 3. GÉNÉRATEUR PDF
+// ==========================================
+function genererPDF() {
+  if (!window.jspdf) return alert("La librairie PDF n'a pas pu être chargée. Vérifiez votre connexion.");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const titre = document.getElementById('pdf-title').value || "Document sans titre";
+  const contenu = document.getElementById('pdf-content').value || "";
+
+  doc.setFontSize(22);
+  doc.text(titre, 10, 20);
+  doc.setFontSize(12);
+
+  const lignes = doc.splitTextToSize(contenu, 180);
+  let y = 40;
+  lignes.forEach(ligne => {
+    if (y > 280) { doc.addPage(); y = 20; }
+    doc.text(ligne, 10, y);
+    y += 7;
+  });
+
+  doc.save("truapps-document.pdf");
+}
+
+// ==========================================
+// 4. OUTILS IMAGE
+// ==========================================
+let imageObj = null;
+
+function previewImage(event) {
+  const file = event.target.files[0];
+  imageObj = null;
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => { URL.revokeObjectURL(url); imageObj = img; };
+  img.onerror = () => { URL.revokeObjectURL(url); alert("Ce fichier image n'a pas pu être lu."); };
+  img.src = url;
+}
+
+function compresserImage() {
+  if (!imageObj) { alert("Veuillez choisir une image d'abord."); return; }
+  const quality = parseFloat(document.getElementById('img-quality').value);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = imageObj.naturalWidth;
+  canvas.height = imageObj.naturalHeight;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(imageObj, 0, 0);
+
+  canvas.toBlob(blob => {
+    if (!blob) { alert("La compression a échoué."); canvas.width = canvas.height = 0; return; }
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'truapps-image-compressee.jpg';
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    canvas.width = canvas.height = 0;
+  }, "image/jpeg", quality);
+}
+
+// ==========================================
+// 5. GÉNÉRATEUR SEO
+// ==========================================
+function genererSEO() {
+  const topic = document.getElementById('seo-topic').value.trim();
+  if (!topic) return alert("Entrez un sujet.");
+
+  const hashtags = `#${topic.replace(/\s+/g, '')} #truapps #creation #viral #fyp #tutoriel #2026`;
+  const description = `Découvrez notre nouvelle création : ${topic} 🎬\n\nRéalisé à 100% en local avec Truapps. Confidentialité garantie, aucun serveur ! 🚀\n\nAbonnez-vous pour plus de contenu !`;
+
+  const res = document.getElementById('seo-result');
+  res.style.display = "block";
+  res.replaceChildren();
+
+  const titreDesc = document.createElement('strong');
+  titreDesc.textContent = "Description :";
+  const blocDesc = document.createElement('div');
+  blocDesc.style.whiteSpace = "pre-line";
+  blocDesc.textContent = description;
+  const titreTags = document.createElement('strong');
+  titreTags.textContent = "Hashtags :";
+  const blocTags = document.createElement('div');
+  blocTags.textContent = hashtags;
+
+  res.append(titreDesc, blocDesc, document.createElement('br'), titreTags, blocTags);
+}
+
+// ==========================================
+// 6. GÉNÉRATEUR QR CODE
+// ==========================================
+function genererQR() {
+  const text = document.getElementById('qr-text').value.trim();
+  const container = document.getElementById('qr-result');
+  if (!text) return alert("Entrez un texte ou un lien.");
+  if (typeof QRCode === 'undefined') return alert("La librairie QR n'a pas pu être chargée.");
+
+  container.innerHTML = "";
+  new QRCode(container, {
+    text: text,
+    width: 200,
+    height: 200,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+</script>
+</body>
+</html>
